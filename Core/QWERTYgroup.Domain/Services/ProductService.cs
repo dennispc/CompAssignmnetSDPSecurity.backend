@@ -1,6 +1,8 @@
+using QWERTYgroup.Core.IServices;
+
 namespace QWERTYgroup.Domain.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         /*
            As A User I would like to See a Single Products Details

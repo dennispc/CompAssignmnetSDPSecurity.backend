@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace QWERTYgroup.Core.Test.IService
+namespace QWERTYgroup.Core.Test.IServices
 {
     public class IProductServiceTest
     {
