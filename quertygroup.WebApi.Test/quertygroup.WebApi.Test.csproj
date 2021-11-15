@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\qwertygroup.Core\qwertygroup.Core.csproj" />
       <ProjectReference Include="..\qwertygroup.WebApi\qwertygroup.WebApi.csproj" />
     </ItemGroup>
 
