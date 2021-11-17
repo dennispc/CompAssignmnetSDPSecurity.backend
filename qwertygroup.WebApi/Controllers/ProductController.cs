@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using CompAssignmnetSDPSecurity.Core.Models;
 using CompAssignmnetSDPSecurity.Core.Services;
+using CompAssignmnetSDPSecurity.WebApi.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompAssignmnetSDPSecurity.WebApi.Controllers
@@ -26,6 +27,21 @@ namespace CompAssignmnetSDPSecurity.WebApi.Controllers
         {
             return null;
         }
+        
+        [HttpGet("id")]
+        public ActionResult<List<Product>> GetProduct(int id)
+        {
+            return null;
+        }
+        
+        [HttpPut]
+        public ActionResult<List<Product>> AddProduct(ProductDto product)
+        {
+            return null;
+        }
+        // TODO put
+        // TODO update
+        // TODO delete
 
     }
 }

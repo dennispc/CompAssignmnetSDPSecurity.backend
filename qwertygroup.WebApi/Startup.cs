@@ -2,6 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CompAssignmnetSDPSecurity.Core.Services;
+using CompAssignmnetSDPSecurity.DataAccess.Repositories;
+using CompAssignmnetSDPSecurity.Domain;
+using CompAssignmnetSDPSecurity.Domain.Services;
+using CompAssignmnetSDPSecurity.WebApi.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,12 +21,14 @@ namespace CompAssignmnetSDPSecurity.WebApi
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -30,6 +37,16 @@ namespace CompAssignmnetSDPSecurity.WebApi
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "qwertygroup.WebApi", Version = "v1"});
+            });
+
+            services.AddApplicationServices();
+            
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
             });
         }
 
@@ -49,6 +66,7 @@ namespace CompAssignmnetSDPSecurity.WebApi
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

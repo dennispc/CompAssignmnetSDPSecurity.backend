@@ -12,6 +12,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\qwertygroup.Core\qwertygroup.Core.csproj" />
+      <ProjectReference Include="..\qwertygroup.DataAccess\qwertygroup.DataAccess.csproj" />
+      <ProjectReference Include="..\qwertygroup.Domain\qwertygroup.Domain.csproj" />
     </ItemGroup>
 
 </Project>
