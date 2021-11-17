@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CompAssignmnetSDPSecurity.Core.Services;
+using CompAssignmnetSDPSecurity.DataAccess;
 using CompAssignmnetSDPSecurity.DataAccess.Repositories;
 using CompAssignmnetSDPSecurity.Domain;
 using CompAssignmnetSDPSecurity.Domain.Services;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,6 +40,11 @@ namespace CompAssignmnetSDPSecurity.WebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "qwertygroup.WebApi", Version = "v1"});
             });
+            
+            services.AddDbContext<MainDbContext>(options =>
+            {
+                options.UseSqlite(_configuration.GetConnectionString("DefaultConnection"));
+            });
 
             services.AddApplicationServices();
             
@@ -51,7 +58,9 @@ namespace CompAssignmnetSDPSecurity.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            MainDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -59,6 +68,7 @@ namespace CompAssignmnetSDPSecurity.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "qwertygroup.WebApi v1"));
+                
             }
 
             app.UseHttpsRedirection();

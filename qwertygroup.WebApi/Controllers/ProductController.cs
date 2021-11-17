@@ -34,12 +34,12 @@ namespace CompAssignmnetSDPSecurity.WebApi.Controllers
             return null;
         }
         
-        [HttpPut]
+        [HttpPost]
         public ActionResult<List<Product>> AddProduct(ProductDto product)
         {
             return null;
         }
-        // TODO put
+        
         // TODO update
         // TODO delete
 
