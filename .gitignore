@@ -467,3 +467,7 @@ TestProductionCodeXunit/obj/Debug/net5.0/TestProductionCodeXunit.csproj.Assembly
 TestProductionCodeXunit/obj/Debug/net5.0/TestProductionCodeXunit.dll
 TestProductionCodeXunit/obj/Debug/net5.0/TestProductionCodeXunit.pdb
 TestProductionCodeXunit/obj/rider.project.restore.info
+.vscode/tasks.json
+.vscode/launch.json
+qwertygroup.WebApi/.vscode/launch.json
+qwertygroup.WebApi/.vscode/tasks.json
