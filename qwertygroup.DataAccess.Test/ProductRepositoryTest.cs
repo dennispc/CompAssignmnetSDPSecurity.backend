@@ -15,12 +15,18 @@ namespace qwertygroup.DataAccess.Test
 {
     public class ProductRepositoryTest
     {
+        private readonly MainDbContext _fakeContext;
+        private readonly ProductRepository _repo;
+
+        public ProductRepositoryTest()
+        {
+            _fakeContext = Create.MockedDbContextFor<MainDbContext>();
+            _repo = new ProductRepository(_fakeContext);
+        }
         [Fact]
         public void ProductRepository_IsIProductRepository()
         {
-            var fakeContext = Create.MockedDbContextFor<MainDbContext>();
-            var repo = new ProductRepository(fakeContext);
-            Assert.IsAssignableFrom<IProductRepository>(repo);
+            Assert.IsAssignableFrom<IProductRepository>(_repo);
         }
 
         [Fact]
@@ -62,6 +68,8 @@ namespace qwertygroup.DataAccess.Test
             var actualResult = repo.FindAll();
             Assert.Equal(expectedResult, actualResult, new Comparer());
         }
+        
+        
     }
 
     public class Comparer : IEqualityComparer<Product>

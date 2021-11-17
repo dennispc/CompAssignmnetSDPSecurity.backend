@@ -46,6 +46,14 @@ namespace qwertygroup.Domain.Test
             _service.GetProducts();
             _mock.Verify(r => r.FindAll(), Times.Once);
         }
+        
+        [Fact]
+        public void DeleteProducts_CallsProductRepositoryDelete_ExactlyOnce()
+        {
+            var product = new Product();
+            _service.DeleteProduct(product);
+            _mock.Verify(r => r.Delete(product), Times.Once);
+        }
 
         [Fact]
         public void GetProducts_NoFilter_ReturnsListOfAllProducts()
