@@ -11,8 +11,8 @@ using CompAssignmnetSDPSecurity.Security.Models;
 
 namespace CompAssignmnetSDPSecurity.Security.Services
 {
-        
-    public class AuthService: IAuthService
+
+    public class AuthService : IAuthService
     {
         private readonly IConfiguration _configuration;
         private readonly AuthDbContext _ctx;
@@ -38,14 +38,14 @@ namespace CompAssignmnetSDPSecurity.Security.Services
         {
             var userFound = IsValidUserInformation(user);
             if (userFound == null) return null;
-           
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("Id", userFound.Id.ToString()), 
+                    new Claim("Id", userFound.Id.ToString()),
                     new Claim("UserName", userFound.UserName)
                 }),
                 Expires = DateTime.UtcNow.AddDays(14),
@@ -71,6 +71,5 @@ namespace CompAssignmnetSDPSecurity.Security.Services
                 .Select(up => up.Permission)
                 .ToList();
         }
-    }
     }
 }
