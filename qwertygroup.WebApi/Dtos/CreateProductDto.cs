@@ -1,8 +1,7 @@
 namespace CompAssignmnetSDPSecurity.WebApi.Dtos
 {
-    public class ProductDto
+    public class CreateProductDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using CompAssignmnetSDPSecurity.DataAccess.Repositories;
 using CompAssignmnetSDPSecurity.Domain;
 using CompAssignmnetSDPSecurity.Domain.Services;
 using CompAssignmnetSDPSecurity.WebApi.Extensions;
+using CompAssignmnetSDPSecurity.WebApi.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +36,7 @@ namespace CompAssignmnetSDPSecurity.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -68,7 +70,7 @@ namespace CompAssignmnetSDPSecurity.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "qwertygroup.WebApi v1"));
-                
+                new DbSeeder(context).SeedDevelopmentDb();
             }
 
             app.UseHttpsRedirection();
