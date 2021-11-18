@@ -79,7 +79,7 @@ namespace CompAssignmnetSDPSecurity.WebApi
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
                 });
             });
 
@@ -159,7 +159,7 @@ namespace CompAssignmnetSDPSecurity.WebApi
             authDbContext.Database.EnsureCreated();
             authDbContext.LoginUsers.Add(new LoginUser
             {
-                UserName = "dp",//not copy paste at all ;)
+                UserName = "dpc",//not copy paste at all ;)
                 HashedPassword = "123456",
                 DbUserId = 1,
             });
