@@ -29,7 +29,6 @@ namespace CompAssignmnetSDPSecurity.WebApi
         }
 
 
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -49,23 +48,30 @@ namespace CompAssignmnetSDPSecurity.WebApi
                             });
                             options.AddSecurityRequirement(new OpenApiSecurityRequirement
                             {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] {}
-                    }
+                                {
+                                    new OpenApiSecurityScheme
+                                        {
+                                        Reference = new OpenApiReference
+                                            {
+                                                Type = ReferenceType.SecurityScheme,
+                                                Id = "Bearer"
+                                            }
+                                        },
+                                    new string[] {}
+                                }
                             });
                         });
             services.AddDbContext<MainDbContext>(options =>
             {
                 options.UseSqlite(_configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddDbContext<AuthDbContext>(opt =>
+            {
+                opt.UseSqlite("Data Source=auth.db");
+            });
+            
+            services.AddScoped<IAuthService, AuthService>();
 
             services.AddApplicationServices();
 
@@ -77,10 +83,6 @@ namespace CompAssignmnetSDPSecurity.WebApi
                 });
             });
 
-            services.AddDbContext<AuthDbContext>(opt =>
-            {
-                opt.UseSqlite("Data Source=auth.db");
-            });
             services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -96,13 +98,13 @@ namespace CompAssignmnetSDPSecurity.WebApi
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = _configuration["Jwt:Issuer"],
                     ValidAudience = _configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])) //Configuration["JwtToken:SecretKey"]
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])) //_configuration["JwtToken:SecretKey"])
                 };
             });
 
-
             services.AddSingleton<IAuthorizationHandler, CanWriteProductsHandler>();
             services.AddSingleton<IAuthorizationHandler, CanReadProductsHandler>();
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(nameof(CanWriteProductsHandler),
@@ -118,25 +120,24 @@ namespace CompAssignmnetSDPSecurity.WebApi
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 }));
-                services.AddAuthentication(option =>
-            {
-                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            services.AddAuthentication(option =>
+        {
+            option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-            }).AddJwtBearer(options =>
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = false,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = _configuration["Jwt:Issuer"],
-                    ValidAudience = _configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])) //Configuration["JwtToken:SecretKey"]
-                };
-            });
-            services.AddScoped<IAuthService,AuthService>();
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _configuration["Jwt:Issuer"],
+                ValidAudience = _configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])) //onfiguration["JwtToken:SecretKey"]
+            };
+        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
